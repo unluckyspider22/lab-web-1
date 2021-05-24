@@ -78,8 +78,8 @@ public class LoginController extends HttpServlet {
                     } else {
                         //check role
                         CategoryDAO cateDao = new CategoryDAO();
-                        List<CategoryDTO> listCate = cateDao.getCategories(dto.getRoleId());
-                        request.setAttribute("LIST_CATE", listCate);
+                        List<CategoryDTO> listCate = cateDao.getCategories(dto.getRoleId());                       
+                        session.setAttribute("LIST_CATE", listCate);
                         if (dto.getRoleId() == GlobalVar.MANAGER_ROLE) {
                             url = SUCCESS_MANAGER;
                         } else if (dto.getRoleId() == GlobalVar.LEADER_ROLE) {
@@ -92,7 +92,6 @@ public class LoginController extends HttpServlet {
             }
         } catch (Exception e) {
             LOGGER.error("Error at LoginController" + e.toString());
-
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

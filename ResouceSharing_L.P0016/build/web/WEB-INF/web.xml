@@ -24,6 +24,14 @@
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.LogoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.SearchController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagingController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.PagingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchController</servlet-name>
+        <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingController</servlet-name>
+        <url-pattern>/PagingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
