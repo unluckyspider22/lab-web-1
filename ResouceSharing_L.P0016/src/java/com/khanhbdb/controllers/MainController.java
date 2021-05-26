@@ -64,6 +64,9 @@ public class MainController extends HttpServlet {
                 url = BOOKING;
             }
             HttpSession session = request.getSession();
+            if (session.getAttribute("USER") == null && action.equals("Search")) {
+                url = USER_LOGIN;
+            }
             if (session.getAttribute("USER") != null && action.equals("Login")) {
                 AccountDTO accountDto = (AccountDTO) session.getAttribute("USER");
                 if (accountDto.getRoleId() == GlobalVar.EMPLOYEE_ROLE) {
