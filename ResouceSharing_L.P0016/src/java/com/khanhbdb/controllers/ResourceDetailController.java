@@ -5,8 +5,13 @@
  */
 package com.khanhbdb.controllers;
 
+import com.khanhbdb.daos.ResourceDAO;
+import com.khanhbdb.dtos.ResourceDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
-public class SearchController extends HttpServlet {
+public class ResourceDetailController extends HttpServlet {
 
-    private final static Logger LOGGER = Logger.getLogger(SearchController.class.getName());
-
-    private final String SUCCESS = "PagingController";
+    private final static Logger LOGGER = Logger.getLogger(MainController.class.getName());
+    private final static String SUCCESS = "resource_detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +36,20 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         String url = SUCCESS;
         try {
-            String pattern = request.getParameter("txtSearch").trim();
-            String categotyId = request.getParameter("CBCATEGORY").trim();
+            String resourceIdParam = request.getParameter("resourceId");
+            int resourceId = Integer.parseInt(resourceIdParam);
+            ResourceDAO resourceDao = new ResourceDAO();
+            ResourceDTO dto = resourceDao.getResourceById(resourceId);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            String nowString = dtf.format(now);
             HttpSession session = request.getSession();
-            session.setAttribute("PATTERN", pattern);
-            session.setAttribute("CBCATEGORY", categotyId);
-
+            session.setAttribute("NOW", nowString);
+            session.setAttribute("RESOURCE_DETAIL", dto);
         } catch (Exception e) {
-            LOGGER.error("Error at SearchController: " + e.toString());
+            LOGGER.error("Error at ResourceDetailController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

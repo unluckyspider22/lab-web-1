@@ -19,10 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
-/**
- *
- * @author donguyen
- */
+
 public class PagingController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(MainController.class.getName());

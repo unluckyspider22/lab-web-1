@@ -10,6 +10,7 @@ package com.khanhbdb.dtos;
  * @author donguyen
  */
 public class ResourceDTO {
+
     private int resourceId;
     private String resourceName;
     private int categoryId;
@@ -77,11 +78,22 @@ public class ResourceDTO {
     public ResourceDTO() {
     }
 
-    public ResourceDTO(String resourceName, String categoryName, String color, int availableQuantity) {
+    public ResourceDTO(int resourceId, String resourceName, String categoryName, String color, int availableQuantity, int quantity) {
         this.resourceName = resourceName;
         this.categoryName = categoryName;
         this.color = color;
         this.availableQuantity = availableQuantity;
+        this.resourceId = resourceId;
+        this.quantity = quantity;
+    }
+
+    public ResourceDTO(int resourceId, String resourceName, String categoryName, String color, int availableQuantity) {
+        this.resourceName = resourceName;
+        this.categoryName = categoryName;
+        this.color = color;
+        this.availableQuantity = availableQuantity;
+        this.resourceId = resourceId;
+
     }
 
     public ResourceDTO(int resourceId, String resourceName, int categoryId, String categoryName, String color, int quantity, int availableQuantity) {
@@ -93,5 +105,5 @@ public class ResourceDTO {
         this.quantity = quantity;
         this.availableQuantity = availableQuantity;
     }
-    
+
 }

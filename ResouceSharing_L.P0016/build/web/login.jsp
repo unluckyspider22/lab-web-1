@@ -14,13 +14,8 @@
                 <h3 class="text-center text-info">Sign In</h3>
                 <div class="form-group">
                     <label for="email" class="text-info">Username:</label><br>
-                    <input type="email" name="txtEmail" id="email" class="form-control" required="true">
-                    <%
-                        String error = (String) request.getAttribute("ERROR");
-                        if (error != null) {
-                    %>
-                    <font color="red"><%=error%></font>
-                    <%}%>
+                    <input type="email" name="txtEmail" id="email" class="form-control" required="true">          
+                    <font color="red">${requestScope.ERROR}</font>
                 </div>
                 <div class="form-group">
                     <label for="password" class="text-info">Password:</label><br>
@@ -41,7 +36,6 @@
                 </div>
                 <a href="register.jsp"><font color="green">Register</font></a> 
             </form>
-
         </div>
     </body>
 </html>

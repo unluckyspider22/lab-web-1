@@ -27,7 +27,8 @@
         </style>
     </head>
     <body>
-        <!--Welcome user-->
+        <c:if test="${sessionScope.USER.roleName ne 'Employee'}"><jsp:forward page="login.jsp"/></c:if>
+            <!--Welcome user-->
         <c:if test="${sessionScope.USER != null}">
             <c:if test="${not empty sessionScope.USER.name}">
                 <h3>Welcome ${sessionScope.USER.name}!</h3>
@@ -43,7 +44,7 @@
         <form action="MainController" class="search-form">
             <div class="form-group">
                 <span class="icon icon-search"></span>
-                <input type="text" class="form-control" placeholder="Type a resource name" name="txtSearch" value="${sessionScope.PATTERN}">
+                 <input type="text" class="form-control" placeholder="Type a resource name" name="txtSearch" value="${sessionScope.PATTERN}">
                 <c:if test="${sessionScope.LIST_CATE != null}">
                     <c:if test="${sessionScope.LIST_CATE.size() > 0}">
                         <select name="CBCATEGORY">
@@ -75,18 +76,25 @@
                                         <th>Category Name</th>
                                         <th>Color</th>
                                         <th>Available Quantity</th>
+                                        <th>Booking status</th>
                                     </tr>
                                     <c:forEach var="resource" items="${requestScope.LIST_RESOURCE}" varStatus="counter">
+                                        <c:url var="resourceDetail" value="MainController">
+                                            <c:param name="action" value="ResourceDetail"/>
+                                            <c:param name="resourceId" value="${resource.resourceId}"/>
+                                        </c:url>
                                         <tr>
                                             <td>${counter.count}</td>
                                             <td>${resource.resourceName}</td>
                                             <td>${resource.categoryName}</td>
                                             <td>${resource.color}</td>
                                             <td>${resource.availableQuantity}</td>
+                                            <td>                                            
+                                                <a href="${resourceDetail}" >View Detail</a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </table>
-
                             </c:if>
                         </c:if>
                     </c:if>
@@ -120,8 +128,17 @@
                 </c:url>
                 <a href="${pageLast}">&gt;</a>
             </c:if>
-
         </ul>
-
+        <script type="text/javascript">
+            function checkQuantity() {
+                var password = document.getElementById("txtPassword").value;
+                var confirmPassword = document.getElementById("txtConfirmPassword").value;
+                if (password != confirmPassword) {
+                    alert("Passwords do not match!");
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </body>
 </html>

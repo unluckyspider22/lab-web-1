@@ -22,12 +22,39 @@ public class ResourceDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    public ResourceDTO getResourceById(int resourceId) throws NamingException, SQLException {
+        ResourceDTO result = null;
+        try {
+            conn = DBUtil.getConnection();
+            String sql = "SELECT r.ResourceId,r.ResourceName,c.CategoryName,r.Color,r.AvailableQuantity,r.Quantity "
+                    + "FROM Resources as r, Categories as c "
+                    + "WHERE r.CategoryId = c.CategoryId AND r.IsAvailable = 1 AND  ResourceId = ?";
+            if (conn != null) {
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, resourceId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    String resourceName = rs.getString("ResourceName");
+                    String categoryName = rs.getString("CategoryName");
+                    String color = rs.getString("Color");
+                    int availableQuantity = rs.getInt("AvailableQuantity");
+                    int quantity = rs.getInt("Quantity");
+                    result = new ResourceDTO(resourceId, resourceName, categoryName, color, availableQuantity, quantity);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+
+        }
+        return result;
+    }
+
     public List<ResourceDTO> searchResourceAvailable(String pattern, int start, int total, int roleId) throws SQLException, NamingException {
         List<ResourceDTO> result = null;
         try {
             conn = DBUtil.getConnection();
             String sql = "";
-            String selectString = "SELECT r.ResourceName, c.CategoryName, r.Color,r.AvailableQuantity "
+            String selectString = "SELECT r.ResourceId,r.ResourceName, c.CategoryName, r.Color,r.AvailableQuantity "
                     + "FROM Resources as r, Categories as c "
                     + "WHERE r.CategoryId = c.CategoryId AND r.IsAvailable = 1 AND r.ResourceName LIKE ? AND ";
             String pagingString = " ORDER BY r.ResourceName ASC "
@@ -50,11 +77,12 @@ public class ResourceDAO {
                 rs = ps.executeQuery();
                 result = new ArrayList<ResourceDTO>();
                 while (rs.next()) {
+                    int resourceId = rs.getInt("ResourceId");
                     String resourceName = rs.getString("ResourceName");
                     String categoryName = rs.getString("CategoryName");
                     String color = rs.getString("Color");
                     int availableQuantity = rs.getInt("AvailableQuantity");
-                    ResourceDTO dto = new ResourceDTO(resourceName, categoryName, color, availableQuantity);
+                    ResourceDTO dto = new ResourceDTO(resourceId, resourceName, categoryName, color, availableQuantity);
                     result.add(dto);
                 }
             }
@@ -69,7 +97,7 @@ public class ResourceDAO {
         try {
             conn = DBUtil.getConnection();
             String sql = "";
-            String selectString = "SELECT r.ResourceName, c.CategoryName, r.Color,r.AvailableQuantity "
+            String selectString = "SELECT r.ResourceId,r.ResourceName, c.CategoryName, r.Color,r.AvailableQuantity "
                     + "FROM Resources as r, Categories as c "
                     + "WHERE r.CategoryId = c.CategoryId AND r.IsAvailable = 1 AND r.CategoryId = ? AND r.ResourceName LIKE ? AND ";
             String pagingString = " ORDER BY r.ResourceName ASC "
@@ -93,11 +121,12 @@ public class ResourceDAO {
                 rs = ps.executeQuery();
                 result = new ArrayList<ResourceDTO>();
                 while (rs.next()) {
+                    int resourceId = rs.getInt("ResourceId");
                     String resourceName = rs.getString("ResourceName");
                     String categoryName = rs.getString("CategoryName");
                     String color = rs.getString("Color");
                     int availableQuantity = rs.getInt("AvailableQuantity");
-                    ResourceDTO dto = new ResourceDTO(resourceName, categoryName, color, availableQuantity);
+                    ResourceDTO dto = new ResourceDTO(resourceId, resourceName, categoryName, color, availableQuantity);
                     result.add(dto);
                 }
             }

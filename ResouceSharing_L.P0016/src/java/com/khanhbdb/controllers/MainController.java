@@ -27,6 +27,8 @@ public class MainController extends HttpServlet {
     private final String EMPLOYEE_PAGE = "employee.jsp";
     private final String LEADER_PAGE = "manager.jsp";
     private final String MANAGER_PAGE = "leader.jsp";
+    private final String RESOURCE_DETAIL = "ResourceDetailController";
+    private final String BOOKING = "BookingController";
     private final String ERROR = "error.jsp";
 
     /**
@@ -56,6 +58,10 @@ public class MainController extends HttpServlet {
                 url = CHECK_VERIFY_CODE;
             } else if (action.equals("Search")) {
                 url = SEARCH;
+            } else if (action.equals("ResourceDetail")) {
+                url = RESOURCE_DETAIL;
+            } else if (action.equals("Book")) {
+                url = BOOKING;
             }
             HttpSession session = request.getSession();
             if (session.getAttribute("USER") != null && action.equals("Login")) {

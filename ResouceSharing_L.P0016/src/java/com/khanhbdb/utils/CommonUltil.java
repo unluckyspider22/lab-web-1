@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -41,6 +43,13 @@ public class CommonUltil implements Serializable {
         long millis = System.currentTimeMillis();
         Date date = new Date(millis);
         return date;
+    }
+
+    public static Date parseStringToDate(String stringDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = sdf.parse(stringDate);
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        return sqlDate;
     }
 
     public static void sendVerificationCode(String email, String code) {

@@ -5,6 +5,7 @@
  */
 package com.khanhbdb.controllers;
 
+import com.khanhbdb.dtos.AccountDTO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +39,12 @@ public class LogoutController extends HttpServlet {
         String url = SUCCESS;
         try {
             HttpSession session = request.getSession();
+            AccountDTO accountDto = (AccountDTO) session.getAttribute("USER");
+            String roleName = accountDto.getRoleName();
             session.invalidate();
+            AccountDTO accountDto1 = (AccountDTO) session.getAttribute("USER");
+            String roleName1 = accountDto1.getRoleName();
+
         } catch (Exception e) {
             LOGGER.error("Error at LogoutController: " + e.toString());
         } finally {
