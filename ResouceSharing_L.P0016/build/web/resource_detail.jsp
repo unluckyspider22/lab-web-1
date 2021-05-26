@@ -62,11 +62,11 @@
             <br>
             <br>
             <label for="bookingDate">Booking Date </label>
-            <input type="date"  name="bookingDate" min="${requestScope.NOW}" required="true" value=${sessionScope.BOOKINGDATE}>
+            <input type="date"  name="bookingDate" min="${sessionScope.NOW}" required="true" value=${sessionScope.BOOKINGDATE}>
             <br>
             <br>
             <label for="returnDate">Return Date </label>
-            <input type="date" name="returnDate" min="${requestScope.NOW}" required="true" value=${sessionScope.RETURNDATE}>
+            <input type="date" name="returnDate" min="${sessionScope.NOW}" required="true" value=${sessionScope.RETURNDATE}>
             <br>
             <br>
             <label for="requestMessage">Request Message </label>
