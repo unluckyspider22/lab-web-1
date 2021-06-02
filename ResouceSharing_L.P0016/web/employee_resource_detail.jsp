@@ -61,12 +61,12 @@
             <input type="number" id="quantity" name="txtQuantity" min="1" max="1000" pattern="^[0-9]" required="true" value=${sessionScope.QUANTITY}>
             <br>
             <br>
-            <label for="bookingDate">Booking Date </label>
-            <input type="date"  name="bookingDate" min="${sessionScope.NOW}" required="true" value=${sessionScope.BOOKINGDATE}>
+            <label for="bookingDate">Booking Time </label>
+            <input type="datetime-local"  name="bookingDate" min="${sessionScope.NOW}" required="true" value=${sessionScope.BOOKINGDATE}>
             <br>
             <br>
-            <label for="returnDate">Return Date </label>
-            <input type="date" name="returnDate" min="${sessionScope.NOW}" required="true" value=${sessionScope.RETURNDATE}>
+            <label for="returnDate">Return Time </label>
+            <input type="datetime-local" name="returnDate" min="${sessionScope.NOW}" required="true" value=${sessionScope.RETURNDATE}>
             <br>
             <br>
             <label for="requestMessage">Request Message </label>

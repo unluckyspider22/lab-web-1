@@ -25,7 +25,7 @@
                                 <div class="form-group">
                                     <label>Your email</label>
                                     <input name="txtEmail" class="form-control" placeholder="Email" type="email" required="true">
-                                    <font color="red">${requestScope.REGISTERERROR.emailError}</font>
+                                    <font color="red">${requestScope.REGISTER_ERROR.emailError}</font>
                                 </div> <!-- form-group// -->
                                 <div class="form-group">
                                     <label>Password</label>

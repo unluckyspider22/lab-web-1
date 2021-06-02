@@ -5,13 +5,10 @@
  */
 package com.khanhbdb.controllers;
 
-import com.khanhbdb.daos.ResourceDAO;
-import com.khanhbdb.dtos.ResourceDTO;
+import com.khanhbdb.daos.BookingStatusDAO;
+import com.khanhbdb.dtos.BookingStatusDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
-public class ResourceDetailController extends HttpServlet {
+/**
+ *
+ * @author donguyen
+ */
+public class ViewBookingController extends HttpServlet {
 
-    private final static Logger LOGGER = Logger.getLogger(MainController.class.getName());
-    private final static String SUCCESS = "employee_resource_detail.jsp";
+    private final static Logger LOGGER = Logger.getLogger(ViewBookingController.class.getName());
+    private final static String SUCCESS = "manager_view_booking.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,16 +39,12 @@ public class ResourceDetailController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = SUCCESS;
         try {
-            String resourceIdParam = request.getParameter("resourceId");
-            int resourceId = Integer.parseInt(resourceIdParam);
-            ResourceDAO resourceDao = new ResourceDAO();
-            ResourceDTO dto = resourceDao.getResourceById(resourceId);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-            LocalDateTime now = LocalDateTime.now();
-            String nowString = dtf.format(now);
-            HttpSession session = request.getSession();
-            session.setAttribute("NOW", nowString);
-            session.setAttribute("RESOURCE_DETAIL", dto);
+            BookingStatusDAO dao = new BookingStatusDAO();
+            List<BookingStatusDTO> result = dao.getBookingStatus();
+            if (result != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("LIST_BOOKINGSTATUS", result);
+            }
         } catch (Exception e) {
             LOGGER.error("Error at ResourceDetailController: " + e.toString());
         } finally {

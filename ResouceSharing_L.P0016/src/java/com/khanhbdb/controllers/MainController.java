@@ -24,11 +24,14 @@ public class MainController extends HttpServlet {
     private final String REGISTER = "RegisterController";
     private final String CHECK_VERIFY_CODE = "CheckVerifyCodeController";
     private final String SEARCH = "SearchController";
+    private final String SEARCH_BOOKING = "SearchBookingController";
     private final String EMPLOYEE_PAGE = "employee.jsp";
     private final String LEADER_PAGE = "manager.jsp";
     private final String MANAGER_PAGE = "leader.jsp";
     private final String RESOURCE_DETAIL = "ResourceDetailController";
     private final String BOOKING = "BookingController";
+    private final String VIEW_BOOKING = "ViewBookingController";
+
     private final String ERROR = "error.jsp";
 
     /**
@@ -62,6 +65,10 @@ public class MainController extends HttpServlet {
                 url = RESOURCE_DETAIL;
             } else if (action.equals("Book")) {
                 url = BOOKING;
+            } else if (action.equals("ViewBooking")) {
+                url = VIEW_BOOKING;
+            } else if (action.equals("SearchBooking")) {
+                url = SEARCH_BOOKING;
             }
             HttpSession session = request.getSession();
             if (session.getAttribute("USER") == null && action.equals("Search")) {

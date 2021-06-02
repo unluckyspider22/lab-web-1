@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
@@ -45,10 +46,16 @@ public class CommonUltil implements Serializable {
         return date;
     }
 
-    public static Date parseStringToDate(String stringDate) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public static Timestamp getCurrentTimestampSql() {
+        long millis = System.currentTimeMillis();
+        Timestamp date = new Timestamp(millis);
+        return date;
+    }
+
+    public static Timestamp parseStringToDate(String stringDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         java.util.Date utilDate = sdf.parse(stringDate);
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        Timestamp sqlDate = new Timestamp(utilDate.getTime());
         return sqlDate;
     }
 

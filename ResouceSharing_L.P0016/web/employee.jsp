@@ -27,7 +27,7 @@
         </style>
     </head>
     <body>
-        <c:if test="${sessionScope.USER.roleName ne 'Employee'}"><jsp:forward page="login.jsp"/></c:if>
+        <c:if test="${sessionScope.USER.roleName ne 'Employee'}"><c:redirect url="login.jsp"></c:redirect></c:if>
             <!--Welcome user-->
         <c:if test="${sessionScope.USER != null}">
             <c:if test="${not empty sessionScope.USER.name}">
@@ -39,7 +39,7 @@
         </c:url>
         <!--Logout-->
         <a href="${Logout}">Logout</a>
-        <p></p>
+        <br>
         <!--Search form-->
         <form action="MainController" class="search-form">
             <div class="form-group">
@@ -129,16 +129,5 @@
                 <a href="${pageLast}">&gt;</a>
             </c:if>
         </ul>
-        <script type="text/javascript">
-            function checkQuantity() {
-                var password = document.getElementById("txtPassword").value;
-                var confirmPassword = document.getElementById("txtConfirmPassword").value;
-                if (password != confirmPassword) {
-                    alert("Passwords do not match!");
-                    return false;
-                }
-                return true;
-            }
-        </script>
     </body>
 </html>

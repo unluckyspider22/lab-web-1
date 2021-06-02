@@ -21,7 +21,6 @@
                 <div class="form-group">
                     <button type="submit" name="action" class="btn btn-info btn-md" value="CheckVerifyCode">Check Verify code</button>             
                 </div>
-                <a href="register.jsp"><font color="green">Register</font></a> 
             </form>
         </div>
     </body>

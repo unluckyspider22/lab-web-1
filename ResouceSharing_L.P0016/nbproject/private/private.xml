@@ -3,18 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/register.jsp</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/utils/CommonUltil.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/SearchController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/dtos/BookingDTO.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/SearchBookingController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/PagingController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/daos/BookingDAO.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/MainController.java</file>
             <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/ResourceDetailController.java</file>
             <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/daos/ResourceDAO.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/login.jsp</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/PagingController.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/LoginController.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/daos/AccountDAO.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/daos/BookingDAO.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/BookingController.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/resource_detail.jsp</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/MainController.java</file>
-            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/employee.jsp</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/manager_view_booking.jsp</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/PagingBookingController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/ViewBookingController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/employee_resource_detail.jsp</file>
         </group>
     </open-files>
 </project-private>

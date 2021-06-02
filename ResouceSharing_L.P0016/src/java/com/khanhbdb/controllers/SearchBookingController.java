@@ -5,13 +5,8 @@
  */
 package com.khanhbdb.controllers;
 
-import com.khanhbdb.daos.ResourceDAO;
-import com.khanhbdb.dtos.ResourceDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
-public class ResourceDetailController extends HttpServlet {
+public class SearchBookingController extends HttpServlet {
 
-    private final static Logger LOGGER = Logger.getLogger(MainController.class.getName());
-    private final static String SUCCESS = "employee_resource_detail.jsp";
+    private final static Logger LOGGER = Logger.getLogger(SearchBookingController.class.getName());
+    private final static String SUCCESS = "PagingBookingController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,19 +32,19 @@ public class ResourceDetailController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = SUCCESS;
+
         try {
-            String resourceIdParam = request.getParameter("resourceId");
-            int resourceId = Integer.parseInt(resourceIdParam);
-            ResourceDAO resourceDao = new ResourceDAO();
-            ResourceDTO dto = resourceDao.getResourceById(resourceId);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-            LocalDateTime now = LocalDateTime.now();
-            String nowString = dtf.format(now);
+            String pattern = request.getParameter("txtSearch").trim();
+            String bookingStatusId = request.getParameter("CBSTATUS").trim();
+            String fromDate = request.getParameter("fromDate");
+            String toDate = request.getParameter("toDate");
             HttpSession session = request.getSession();
-            session.setAttribute("NOW", nowString);
-            session.setAttribute("RESOURCE_DETAIL", dto);
+            session.setAttribute("PATTERN", pattern);
+            session.setAttribute("CBSTATUS", bookingStatusId);
+            session.setAttribute("FROMDATE", fromDate);
+            session.setAttribute("TODATE", toDate);
         } catch (Exception e) {
-            LOGGER.error("Error at ResourceDetailController: " + e.toString());
+            LOGGER.error("Error at SearchBookingController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

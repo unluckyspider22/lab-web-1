@@ -8,6 +8,7 @@
         <title>Leader Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-    </body>
+    <c:if test="${sessionScope.USER.roleName ne 'Leader'}"><jsp:forward page="login.jsp"/></c:if>
+    <h1>Hello World!</h1>
+</body>
 </html>

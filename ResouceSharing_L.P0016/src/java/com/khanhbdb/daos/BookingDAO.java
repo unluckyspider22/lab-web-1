@@ -5,6 +5,7 @@
  */
 package com.khanhbdb.daos;
 
+import com.khanhbdb.dtos.BookingDTO;
 import com.khanhbdb.utils.CommonUltil;
 import com.khanhbdb.utils.DBUtil;
 import java.sql.Connection;
@@ -12,6 +13,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 
 public class BookingDAO {
@@ -20,7 +24,7 @@ public class BookingDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    public boolean createBooking(int resourceId, int quantity, Date bookingDate, Date resturnDate, String email, String requestMessage) throws NamingException, SQLException {
+    public boolean createBooking(int resourceId, int quantity, Timestamp bookingDate, Timestamp resturnDate, String email, String requestMessage) throws NamingException, SQLException {
         boolean result = false;
         try {
             conn = DBUtil.getConnection();
@@ -29,12 +33,12 @@ public class BookingDAO {
                 ps = conn.prepareStatement(sql);
                 ps.setInt(1, resourceId);
                 ps.setInt(2, quantity);
-                ps.setDate(3, bookingDate);
-                ps.setDate(4, resturnDate);
+                ps.setTimestamp(3, bookingDate);
+                ps.setTimestamp(4, resturnDate);
                 ps.setString(5, email);
                 ps.setString(6, requestMessage);
                 ps.setInt(7, 1);
-                ps.setDate(8, CommonUltil.getCurrentDateSql());
+                ps.setTimestamp(8, CommonUltil.getCurrentTimestampSql());
 
                 result = (ps.executeUpdate() > 0);
             }
@@ -44,4 +48,313 @@ public class BookingDAO {
         return result;
     }
 
+    public List<BookingDTO> getNewBookings() throws NamingException, SQLException {
+        List<BookingDTO> result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId AND b.BookingStatusId =1 AND b.IsDeleted = 0 ORDER BY InsDate ASC";
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+                result = new ArrayList<BookingDTO>();
+                while (rs.next()) {
+                    int bookingId = rs.getInt("BookingId");
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    String resourceName = rs.getString("ResourceName");
+                    BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, insDate, requestMessage, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public List<BookingDTO> getBookingHistory() throws NamingException, SQLException {
+        List<BookingDTO> result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId AND(b.BookingStatusId = 3 OR b.BookingStatusId = 2 ) AND b.IsDeleted = 0 ORDER BY InsDate ASC";
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+                result = new ArrayList<BookingDTO>();
+                while (rs.next()) {
+                    int bookingId = rs.getInt("BookingId");
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    String resourceName = rs.getString("ResourceName");
+                    BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public List<BookingDTO> searchBookingByBookingStatus(String pattern, int start, int total, int bookingStatusId) throws NamingException, SQLException {
+        List<BookingDTO> result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId"
+                        + " AND b.BookingStatusId = ? AND r.ResourceName LIKE ? AND b.IsDeleted = 0 ORDER BY InsDate ASC "
+                        + "OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, bookingStatusId);
+                ps.setString(2, "%" + pattern + "%");
+                ps.setInt(3, start);
+                ps.setInt(4, total);
+                rs = ps.executeQuery();
+                result = new ArrayList<BookingDTO>();
+                while (rs.next()) {
+                    int bookingId = rs.getInt("BookingId");
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    String resourceName = rs.getString("ResourceName");
+                    BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public List<BookingDTO> searchBookingByResourceName(String pattern, int start, int total) throws NamingException, SQLException {
+        List<BookingDTO> result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId"
+                        + " AND r.ResourceName LIKE ? AND b.IsDeleted = 0 ORDER BY InsDate ASC "
+                        + "OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                ps.setInt(2, start);
+                ps.setInt(3, total);
+                rs = ps.executeQuery();
+                result = new ArrayList<BookingDTO>();
+                while (rs.next()) {
+                    int bookingId = rs.getInt("BookingId");
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    String resourceName = rs.getString("ResourceName");
+                    BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public List<BookingDTO> searchBookingByBookingDate(String pattern, int start, int total, Timestamp startDate, Timestamp endDate) throws NamingException, SQLException {
+        List<BookingDTO> result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId"
+                        + " AND r.ResourceName LIKE ? AND b.IsDeleted = 0 AND BookingDate >= ? AND BookingDate <= ? ORDER BY InsDate ASC "
+                        + "OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                ps.setTimestamp(2, startDate);
+                ps.setTimestamp(3, endDate);
+                ps.setInt(4, start);
+                ps.setInt(5, total);
+                rs = ps.executeQuery();
+                result = new ArrayList<BookingDTO>();
+                while (rs.next()) {
+                    int bookingId = rs.getInt("BookingId");
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    String resourceName = rs.getString("ResourceName");
+                    BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public List<BookingDTO> searchBookingByBookingDateWithStatus(String pattern, int start, int total, Timestamp startDate, Timestamp endDate, int bookingStatusId) throws NamingException, SQLException {
+        List<BookingDTO> result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId"
+                        + " AND r.ResourceName LIKE ? AND b.IsDeleted = 0 AND BookingDate >= ? AND BookingDate <= ? AND b.BookingStatusId = ? ORDER BY InsDate ASC "
+                        + "OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                ps.setTimestamp(2, startDate);
+                ps.setTimestamp(3, endDate);
+                ps.setInt(4, bookingStatusId);
+                ps.setInt(5, start);
+                ps.setInt(6, total);
+                rs = ps.executeQuery();
+                result = new ArrayList<BookingDTO>();
+                while (rs.next()) {
+                    int bookingId = rs.getInt("BookingId");
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    String resourceName = rs.getString("ResourceName");
+                    BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.add(dto);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public int getNumberOfBookingByBookingDate(String pattern, Timestamp startDate, Timestamp endDate) throws NamingException, SQLException {
+        int result = 0;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT COUNT(b.BookingId) as Result "
+                        + "FROM Bookings as b, Resources as r "
+                        + "WHERE b.ResourceId = r.ResourceId "
+                        + " AND r.ResourceName LIKE ? AND b.IsDeleted = 0 AND BookingDate >= ? AND BookingDate <= ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                ps.setTimestamp(2, startDate);
+                ps.setTimestamp(3, endDate);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("Result");
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public int getNumberOfBookingByBookingDateWithStatus(String pattern, Timestamp startDate, Timestamp endDate,int bookingStatusId) throws NamingException, SQLException {
+        int result = 0;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT COUNT(b.BookingId) as Result "
+                        + "FROM Bookings as b, Resources as r, BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId "
+                        + " AND r.ResourceName LIKE ? AND b.IsDeleted = 0 AND BookingDate >= ? AND BookingDate <= ? AND b.BookingStatusId = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                ps.setTimestamp(2, startDate);
+                ps.setTimestamp(3, endDate);
+                ps.setInt(4, bookingStatusId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("Result");
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public int getNumberOfBookingByResourceName(String pattern) throws NamingException, SQLException {
+        int result = 0;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT COUNT(b.BookingId) as Result FROM Bookings as b, Resources as r, BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId"
+                        + " AND r.ResourceName LIKE ? AND b.IsDeleted = 0";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("Result");
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public int getNumberOfBookingByBookingStatus(String pattern, int bookingStatusId) throws NamingException, SQLException {
+        int result = 0;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT COUNT(b.BookingId) as Result FROM Bookings as b, Resources as r, BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId"
+                        + " AND r.ResourceName LIKE ? AND bk.BookingStatusId = ? AND b.IsDeleted = 0";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "%" + pattern + "%");
+                ps.setInt(2, bookingStatusId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("Result");
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
 }

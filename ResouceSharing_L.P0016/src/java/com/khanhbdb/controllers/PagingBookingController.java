@@ -5,11 +5,13 @@
  */
 package com.khanhbdb.controllers;
 
-import com.khanhbdb.daos.ResourceDAO;
+import com.khanhbdb.daos.BookingDAO;
 import com.khanhbdb.dtos.AccountDTO;
-import com.khanhbdb.dtos.ResourceDTO;
+import com.khanhbdb.dtos.BookingDTO;
+import com.khanhbdb.utils.CommonUltil;
 import com.khanhbdb.utils.GlobalVar;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -19,13 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
-public class PagingController extends HttpServlet {
+/**
+ *
+ * @author donguyen
+ */
+public class PagingBookingController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(MainController.class.getName());
 
-    private final String SUCCESS_EMP = "employee.jsp";
-    private final String SUCCESS_MAG = "manager.jsp";
-    private final String SUCCESS_LEA = "leader.jsp";
+    private final String SUCCESS_EMP = "employee_view_booking.jsp";
+    private final String SUCCESS_MAG = "manager_view_booking.jsp";
+    private final String SUCCESS_LEA = "leader_view_booking.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,11 +45,12 @@ public class PagingController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         String url = "";
         HttpSession session = request.getSession();
         AccountDTO accountDto = (AccountDTO) session.getAttribute("USER");
         int roleId = accountDto.getRoleId();
-        int cateId = 0;
+        int bookingStatusId = 0;
         if (roleId == GlobalVar.EMPLOYEE_ROLE) {
             url = SUCCESS_EMP;
         } else if (roleId == GlobalVar.LEADER_ROLE) {
@@ -52,37 +59,45 @@ public class PagingController extends HttpServlet {
             url = SUCCESS_MAG;
         }
         try {
-            String cateParam = request.getParameter("CBCATEGORY");
-            if (cateParam.equals("All")) {
-                cateId = 0;
+            String bookingStatusParam = request.getParameter("CBSTATUS");
+            if (bookingStatusParam.equals("All")) {
+                bookingStatusId = 0;
             } else {
-                cateId = Integer.parseInt(cateParam);
+                bookingStatusId = Integer.parseInt(bookingStatusParam);
             }
-            //get search keyword
             String pattern = (String) session.getAttribute("PATTERN");
-            //get page num
+            String fromDate = request.getParameter("fromDate");
+            String toDate = request.getParameter("toDate");
             String pageReqId = request.getParameter("page");
             if (pageReqId == null) {
                 pageReqId = "1";
             }
             int start = Integer.parseInt(pageReqId);
-            // start is start index of list result, if page is 1, subtract 1 to get start from 0.
             start -= 1;
-            //total is the number of result
             int total = 20;
             start *= total;
-            //get list base on keyword pattern
-            ResourceDAO resourceDao = new ResourceDAO();
+            BookingDAO bookingDao = new BookingDAO();
+            List<BookingDTO> listBooking = new ArrayList<BookingDTO>();
             int numberOfResult = 0;
-            List<ResourceDTO> listResource;
-            if (cateId == 0) {
-                listResource = resourceDao.searchResourceAvailable(pattern, start, total, roleId);
-                numberOfResult = resourceDao.getNumberOfAvailableResource(pattern, roleId);
+            if ((fromDate == null || fromDate.equals("")) && ((toDate == null || toDate.equals("")))) {
+                if (bookingStatusId == 0) {
+                    listBooking = bookingDao.searchBookingByResourceName(pattern, start, total);
+                    numberOfResult = bookingDao.getNumberOfBookingByResourceName(pattern);
+                } else {
+                    listBooking = bookingDao.searchBookingByBookingStatus(pattern, start, total, bookingStatusId);
+                    numberOfResult = bookingDao.getNumberOfBookingByBookingStatus(pattern, bookingStatusId);
+                }
             } else {
-                listResource = resourceDao.searchResourceAvailableByCateId(pattern, start, total, roleId, cateId);
-                numberOfResult = resourceDao.getNumberOfAvailableResourceByCateId(pattern, roleId, cateId);
+                Timestamp startDate = CommonUltil.parseStringToDate(fromDate);
+                Timestamp endDate = CommonUltil.parseStringToDate(toDate);
+                if (bookingStatusId == 0) {
+                    listBooking = bookingDao.searchBookingByBookingDate(pattern, start, total, startDate, endDate);
+                    numberOfResult = bookingDao.getNumberOfBookingByBookingDate(pattern, startDate, endDate);
+                } else {
+                    listBooking = bookingDao.searchBookingByBookingDateWithStatus(pattern, start, total, startDate, endDate, bookingStatusId);
+                    numberOfResult = bookingDao.getNumberOfBookingByBookingDateWithStatus(pattern, startDate, endDate, bookingStatusId);
+                }
             }
-            // get the total number of list base on keyword pattern
             if (numberOfResult == 0) {
                 request.setAttribute("SEARCH_MESSAGE", "No result!");
             } else {
@@ -92,11 +107,12 @@ public class PagingController extends HttpServlet {
                 for (int i = 1; i <= numberOfPage; i++) {
                     listPage.add(i);
                 }
-                request.setAttribute("LIST_RESOURCE", listResource);
+                request.setAttribute("LIST_BOOKING", listBooking);
                 request.setAttribute("NB_PAGE", listPage);
             }
         } catch (Exception e) {
-            LOGGER.error("Error at PagingController: " + e.toString());
+            LOGGER.error("Error at PagingBooking+Controller: " + e.toString());
+            log("ERROR at PagingBookingController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

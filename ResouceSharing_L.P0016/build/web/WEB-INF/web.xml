@@ -8,10 +8,7 @@
         <servlet-name>RegisterController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.RegisterController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>CreateVerificationCodeController</servlet-name>
-        <servlet-class>com.khanhbdb.controllers.CreateVerificationCodeController</servlet-class>
-    </servlet>
+
     <servlet>
         <servlet-name>CheckVerifyCodeController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.CheckVerifyCodeController</servlet-class>
@@ -40,6 +37,18 @@
         <servlet-name>BookingController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.BookingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewBookingController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.ViewBookingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchBookingController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.SearchBookingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagingBookingController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.PagingBookingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -47,10 +56,6 @@
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateVerificationCodeController</servlet-name>
-        <url-pattern>/CreateVerificationCodeController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CheckVerifyCodeController</servlet-name>
@@ -79,6 +84,18 @@
     <servlet-mapping>
         <servlet-name>BookingController</servlet-name>
         <url-pattern>/BookingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBookingController</servlet-name>
+        <url-pattern>/ViewBookingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchBookingController</servlet-name>
+        <url-pattern>/SearchBookingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagingBookingController</servlet-name>
+        <url-pattern>/PagingBookingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -5,19 +5,28 @@
  */
 package com.khanhbdb.dtos;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class BookingDTO {
 
     private int bookingId;
     private String email;
-    private Date bookingDate;
-    private Date returnDate;
+    private Timestamp bookingTimestamp;
+    private Timestamp returnTimestamp;
     private String requestMessage;
     private String responseMessage;
     private String censorName;
     private int bookingStatusId;
-    private Date insDate;
+    private String bookingStatusName;
+
+    public String getBookingStatusName() {
+        return bookingStatusName;
+    }
+
+    public void setBookingStatusName(String bookingStatusName) {
+        this.bookingStatusName = bookingStatusName;
+    }
+    private Timestamp insTimestamp;
     private int resourceId;
     private String resourceName;
     private int quantity;
@@ -26,20 +35,54 @@ public class BookingDTO {
     public BookingDTO() {
     }
 
-    public BookingDTO(int bookingId, String email, Date bookingDate, Date returnDate, String requestMessage, String responseMessage, String censorName, int bookingStatusId, Date insDate, int resourceId, String resourceName, int quantity, boolean isDeleted) {
+    public BookingDTO(int bookingId, String email, Timestamp bookingTimestamp, Timestamp returnTimestamp, String requestMessage, String responseMessage, String censorName, int bookingStatusId, String bookingStatusName, Timestamp insTimestamp, int resourceId, String resourceName, int quantity, boolean isDeleted) {
         this.bookingId = bookingId;
         this.email = email;
-        this.bookingDate = bookingDate;
-        this.returnDate = returnDate;
+        this.bookingTimestamp = bookingTimestamp;
+        this.returnTimestamp = returnTimestamp;
         this.requestMessage = requestMessage;
         this.responseMessage = responseMessage;
         this.censorName = censorName;
         this.bookingStatusId = bookingStatusId;
-        this.insDate = insDate;
+        this.bookingStatusName = bookingStatusName;
+        this.insTimestamp = insTimestamp;
         this.resourceId = resourceId;
         this.resourceName = resourceName;
         this.quantity = quantity;
         this.isDeleted = isDeleted;
+    }
+
+    public BookingDTO(int bookingId, String email, Timestamp bookingTimestamp, Timestamp returnTimestamp, String requestMessage, String censorName, int bookingStatusId, String bookingStatusName, Timestamp insTimestamp, int resourceId, String resourceName, int quantity) {
+        this.bookingId = bookingId;
+        this.email = email;
+        this.bookingTimestamp = bookingTimestamp;
+        this.returnTimestamp = returnTimestamp;
+        this.requestMessage = requestMessage;
+        this.responseMessage = responseMessage;
+        this.censorName = censorName;
+        this.bookingStatusId = bookingStatusId;
+        this.bookingStatusName = bookingStatusName;
+        this.insTimestamp = insTimestamp;
+        this.resourceId = resourceId;
+        this.resourceName = resourceName;
+        this.quantity = quantity;
+        this.isDeleted = isDeleted;
+    }
+
+    public BookingDTO(int bookingId, String email, Timestamp bookingTimestamp, Timestamp returnTimestamp, String requestMessage, String responseMessage, String censorName, int bookingStatusId, String bookingStatusName, Timestamp insTimestamp, int resourceId, String resourceName, int quantity) {
+        this.bookingId = bookingId;
+        this.email = email;
+        this.bookingTimestamp = bookingTimestamp;
+        this.returnTimestamp = returnTimestamp;
+        this.requestMessage = requestMessage;
+        this.responseMessage = responseMessage;
+        this.censorName = censorName;
+        this.bookingStatusId = bookingStatusId;
+        this.bookingStatusName = bookingStatusName;
+        this.insTimestamp = insTimestamp;
+        this.resourceId = resourceId;
+        this.resourceName = resourceName;
+        this.quantity = quantity;
     }
 
     public int getBookingId() {
@@ -58,20 +101,20 @@ public class BookingDTO {
         this.email = email;
     }
 
-    public Date getBookingDate() {
-        return bookingDate;
+    public Timestamp getBookingTimestamp() {
+        return bookingTimestamp;
     }
 
-    public void setBookingDate(Date bookingDate) {
-        this.bookingDate = bookingDate;
+    public void setBookingTimestamp(Timestamp bookingTimestamp) {
+        this.bookingTimestamp = bookingTimestamp;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
+    public Timestamp getReturnTimestamp() {
+        return returnTimestamp;
     }
 
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
+    public void setReturnTimestamp(Timestamp returnTimestamp) {
+        this.returnTimestamp = returnTimestamp;
     }
 
     public String getRequestMessage() {
@@ -106,12 +149,12 @@ public class BookingDTO {
         this.bookingStatusId = bookingStatusId;
     }
 
-    public Date getInsDate() {
-        return insDate;
+    public Timestamp getInsTimestamp() {
+        return insTimestamp;
     }
 
-    public void setInsDate(Date insDate) {
-        this.insDate = insDate;
+    public void setInsTimestamp(Timestamp insTimestamp) {
+        this.insTimestamp = insTimestamp;
     }
 
     public int getResourceId() {
@@ -145,5 +188,5 @@ public class BookingDTO {
     public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
-    
+
 }

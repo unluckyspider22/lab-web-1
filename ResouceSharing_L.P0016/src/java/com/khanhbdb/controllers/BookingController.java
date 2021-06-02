@@ -11,6 +11,7 @@ import com.khanhbdb.dtos.ResourceDTO;
 import com.khanhbdb.utils.CommonUltil;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
 public class BookingController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(BookingController.class.getName());
-    private final static String SUCCESS = "resource_detail.jsp";
+    private final static String SUCCESS = "employee_resource_detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,21 +53,23 @@ public class BookingController extends HttpServlet {
             String email = accountDto.getEmail();
             int resourceId = resourceDto.getResourceId();
             int quantity = Integer.parseInt(quantityParam);
-            Date bookingDate = CommonUltil.parseStringToDate(bookingDateParam);
-            Date returnDate = CommonUltil.parseStringToDate(returnDateParam);
+            Timestamp bookingDate = CommonUltil.parseStringToDate(bookingDateParam);
+            Timestamp returnDate = CommonUltil.parseStringToDate(returnDateParam);
             if (quantity > resourceDto.getAvailableQuantity()) {
                 valid = false;
                 request.setAttribute("FAIL_WARNING", "Booking FAILED !!!");
                 request.setAttribute("MESSAGE", "The quantity must be less than available quantity of resource !");
             }
-            if (returnDate.compareTo(bookingDate) < 0) {
+            if (returnDate.compareTo(bookingDate) <= 0) {
                 valid = false;
                 request.setAttribute("FAIL_WARNING", "Booking FAILED !!!");
-                request.setAttribute("MESSAGE", "The return day must be after or equal the booking date !");
+                request.setAttribute("MESSAGE", "The return time must be after the booking time !");
             }
+
             if (valid) {
                 BookingDAO bookingDao = new BookingDAO();
-                boolean result = bookingDao.createBooking(resourceId, quantity, bookingDate, returnDate, email, requestMessage);
+                boolean result
+                        = bookingDao.createBooking(resourceId, quantity, bookingDate, returnDate, email, requestMessage);
                 if (result) {
                     request.setAttribute("SUCCESS_MESS", "Booking Successfully !!!");
                 } else {
