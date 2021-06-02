@@ -31,7 +31,7 @@ public class MainController extends HttpServlet {
     private final String RESOURCE_DETAIL = "ResourceDetailController";
     private final String BOOKING = "BookingController";
     private final String VIEW_BOOKING = "ViewBookingController";
-
+    private final String UPDATE_BOOKING_STATUS = "UpdateBookingStatusController";
     private final String ERROR = "error.jsp";
 
     /**
@@ -69,6 +69,8 @@ public class MainController extends HttpServlet {
                 url = VIEW_BOOKING;
             } else if (action.equals("SearchBooking")) {
                 url = SEARCH_BOOKING;
+            } else if (action.equals("Confirm Update")) {
+                url = UPDATE_BOOKING_STATUS;
             }
             HttpSession session = request.getSession();
             if (session.getAttribute("USER") == null && action.equals("Search")) {

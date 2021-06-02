@@ -49,6 +49,23 @@ public class ResourceDAO {
         return result;
     }
 
+    public boolean updateResourceQuantity(int resourceId,int availableQuantity) throws NamingException, SQLException {
+        boolean result = false;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "UPDATE Resources SET AvailableQuantity = ? WHERE ResourceId = ?";
+                ps = conn.prepareStatement(sql);     
+                ps.setInt(1, availableQuantity);
+                ps.setInt(2, resourceId);
+                result = (ps.executeUpdate() > 0);
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
     public List<ResourceDTO> searchResourceAvailable(String pattern, int start, int total, int roleId) throws SQLException, NamingException {
         List<ResourceDTO> result = null;
         try {

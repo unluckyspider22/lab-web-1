@@ -27,6 +27,32 @@
         a {
             margin-left: 15
         }
+        .buttonA {
+            height: 30px;
+            width: 80px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .buttonR {
+            height: 30px;
+            width: 80px;
+            background-color: #f44336;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
     </style>
     <script>
         let valChk = false;
@@ -51,6 +77,9 @@
             <h1>Booking Management</h1>
 
             <!--Search form-->
+            <a href="manager.jsp">Back to home page</a>
+            <br>
+            <br>
             <form action="MainController" class="search-form">
                 <div class="form-group">
                     <span class="icon icon-search"></span>
@@ -88,6 +117,9 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" style="margin-top: 1rem" name="action" value="SearchBooking">Search</button>
+
+                <h3><font color="blue">${requestScope.RESULTUPDATESUCC}</font></h3>
+                <h3><font color="red">${requestScope.RESULTUPDATEFAI}</font></h3>
             </div>
             <div class="col-xl-8 py-5 px-md-5">
                 <div class="row pt-md-4">
@@ -107,10 +139,14 @@
                                         <th>Return Time</th>
                                         <th>Status</th>
                                         <th>Request Time</th>
-                                        <th>Quantity</th>                                     
+                                        <th>Quantity</th>  
+
                                     </tr>
                                     <c:forEach var="booking" items="${requestScope.LIST_BOOKING}" varStatus="counter">
-                                        <tr>
+                                        <tr>     
+                                            <c:url var="viewDetail" value="ViewBookingDetailController">
+                                                <c:param name="bookingId" value="${booking.bookingId}"></c:param>
+                                            </c:url>
                                             <td>${counter.count}</td>
                                             <td>${booking.resourceName}</td>
                                             <td>${booking.email}</td>
@@ -118,9 +154,19 @@
                                             <td><fmt:formatDate value="${booking.returnTimestamp}" pattern="MM/dd/yyyy HH:mm"/></td> 
                                             <td>${booking.bookingStatusName}</td> 
                                             <td><fmt:formatDate value="${booking.insTimestamp}" pattern="MM/dd/yyyy HH:mm"/></td>
-                                            <td>${booking.quantity}</td>             
-                                            </tr>
-                                        </c:forEach>
+                                            <td>${booking.quantity}</td>
+                                            <td>
+                                                <a href="${viewDetail}" >View Detail</a>
+                                                <%--<c:if test="${booking.bookingStatusId eq 1}">--%>
+                                                <!--<form action="MainController" method="POST">-->
+                                                <!--<button class="buttonA" name="action" value="2">Approve</button>-->
+                                                <!--<button class="buttonR" name="action" value="3">Reject</button>-->
+                                                <!--<textarea  name="requestMessage" form="usrform" placeholder="Enter message here..." style="resize: none" required="true">${sessionScope.REQUESTMESSAGE}</textarea>-->
+                                                <!--</form>-->
+                                                <%--</c:if>--%>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                 </table>
                             </c:if>
                         </c:if>

@@ -48,6 +48,59 @@ public class BookingDAO {
         return result;
     }
 
+    public boolean updateBookingStatus(int bookingId, String respMess, int bookingStatusId, String censorName) throws NamingException, SQLException {
+        boolean result = false;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "UPDATE Bookings SET ResponseMessage = ? , BookingStatusId = ? ,CensorName = ? WHERE BookingId = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, respMess);
+                ps.setInt(2, bookingStatusId);
+                ps.setString(3, censorName);
+                ps.setInt(4, bookingId);
+                result = (ps.executeUpdate() > 0);
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public BookingDTO getBookingById(int bookingId) throws NamingException, SQLException {
+        BookingDTO result = null;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName,r.AvailableQuantity "
+                        + "FROM Bookings as b, Resources as r,BookingStatus as bk "
+                        + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId AND b.BookingId = ? AND b.IsDeleted = 0";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, bookingId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    String email = rs.getString("Email");
+                    Timestamp bookingDate = rs.getTimestamp("BookingDate");
+                    Timestamp returnDate = rs.getTimestamp("ReturnDate");
+                    String requestMessage = rs.getString("RequestMessage");
+                    int bookingStatusId = rs.getInt("BookingStatusId");
+                    String bookingStatusName = rs.getString("Name");
+                    Timestamp insDate = rs.getTimestamp("InsDate");
+                    int quantity = rs.getInt("Quantity");
+                    int resourceId = rs.getInt("ResourceId");
+                    int availableQuantity = rs.getInt("AvailableQuantity");
+                    String resourceName = rs.getString("ResourceName");
+                    result = new BookingDTO(bookingId, email, bookingDate, insDate, requestMessage, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result.setBookingStatusId(bookingStatusId);
+                    result.setAvailableQuantity(availableQuantity);
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
     public List<BookingDTO> getNewBookings() throws NamingException, SQLException {
         List<BookingDTO> result = null;
         try {
@@ -290,7 +343,7 @@ public class BookingDAO {
         return result;
     }
 
-    public int getNumberOfBookingByBookingDateWithStatus(String pattern, Timestamp startDate, Timestamp endDate,int bookingStatusId) throws NamingException, SQLException {
+    public int getNumberOfBookingByBookingDateWithStatus(String pattern, Timestamp startDate, Timestamp endDate, int bookingStatusId) throws NamingException, SQLException {
         int result = 0;
         try {
             conn = DBUtil.getConnection();

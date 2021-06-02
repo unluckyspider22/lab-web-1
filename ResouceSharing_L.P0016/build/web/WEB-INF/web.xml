@@ -8,7 +8,6 @@
         <servlet-name>RegisterController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.RegisterController</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>CheckVerifyCodeController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.CheckVerifyCodeController</servlet-class>
@@ -48,6 +47,14 @@
     <servlet>
         <servlet-name>PagingBookingController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.PagingBookingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewBookingDetailController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.ViewBookingDetailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateBookingStatusController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.UpdateBookingStatusController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
@@ -97,9 +104,17 @@
         <servlet-name>PagingBookingController</servlet-name>
         <url-pattern>/PagingBookingController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBookingDetailController</servlet-name>
+        <url-pattern>/ViewBookingDetailController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateBookingStatusController</servlet-name>
+        <url-pattern>/UpdateBookingStatusController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            60
         </session-timeout>
     </session-config>
     <welcome-file-list>

@@ -18,6 +18,20 @@ public class BookingDTO {
     private String censorName;
     private int bookingStatusId;
     private String bookingStatusName;
+    private Timestamp insTimestamp;
+    private int resourceId;
+    private String resourceName;
+    private int quantity;
+    private boolean isDeleted;
+    private int availableQuantity;
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
 
     public String getBookingStatusName() {
         return bookingStatusName;
@@ -26,11 +40,6 @@ public class BookingDTO {
     public void setBookingStatusName(String bookingStatusName) {
         this.bookingStatusName = bookingStatusName;
     }
-    private Timestamp insTimestamp;
-    private int resourceId;
-    private String resourceName;
-    private int quantity;
-    private boolean isDeleted;
 
     public BookingDTO() {
     }
