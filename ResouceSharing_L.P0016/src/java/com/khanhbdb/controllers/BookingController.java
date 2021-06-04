@@ -9,6 +9,7 @@ import com.khanhbdb.daos.BookingDAO;
 import com.khanhbdb.dtos.AccountDTO;
 import com.khanhbdb.dtos.ResourceDTO;
 import com.khanhbdb.utils.CommonUltil;
+import com.khanhbdb.utils.GlobalVar;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -22,7 +23,8 @@ import org.apache.log4j.Logger;
 public class BookingController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(BookingController.class.getName());
-    private final static String SUCCESS = "employee_resource_detail.jsp";
+    private final static String SUCCESS_EMP = "employee_resource_detail.jsp";
+    private final static String SUCCESS_LEA = "leader_resource_detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,7 +38,7 @@ public class BookingController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = "";
         boolean valid = true;
         try {
             String quantityParam = request.getParameter("txtQuantity");
@@ -72,6 +74,11 @@ public class BookingController extends HttpServlet {
                         = bookingDao.createBooking(resourceId, quantity, bookingDate, returnDate, email, requestMessage);
                 if (result) {
                     request.setAttribute("SUCCESS_MESS", "Booking Successfully !!!");
+                    if (accountDto.getRoleId() == GlobalVar.EMPLOYEE_ROLE) {
+                        url = SUCCESS_EMP;
+                    } else {
+                        url = SUCCESS_LEA;
+                    }
                 } else {
                     request.setAttribute("FAIL_MESS", "Booking FAILED !!!");
                 }

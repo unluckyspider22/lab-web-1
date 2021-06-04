@@ -56,6 +56,10 @@
         <servlet-name>UpdateBookingStatusController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.UpdateBookingStatusController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewBookingHistoryController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.ViewBookingHistoryController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>UpdateBookingStatusController</servlet-name>
         <url-pattern>/UpdateBookingStatusController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBookingHistoryController</servlet-name>
+        <url-pattern>/ViewBookingHistoryController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
