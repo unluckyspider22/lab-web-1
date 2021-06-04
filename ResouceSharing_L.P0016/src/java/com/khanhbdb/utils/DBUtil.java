@@ -27,9 +27,8 @@ public class DBUtil implements Serializable {
 //        return conn;
         Connection conn = null;
         try {
-            
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName = ResourceSharing", "sa", "123456");
+            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName = ResourceSharing", "sa", "1");
         } catch (Exception e) {
             e.printStackTrace();
         }

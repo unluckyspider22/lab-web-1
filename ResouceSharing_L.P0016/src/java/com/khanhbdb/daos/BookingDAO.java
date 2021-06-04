@@ -72,7 +72,7 @@ public class BookingDAO {
         try {
             conn = DBUtil.getConnection();
             if (conn != null) {
-                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName,r.AvailableQuantity "
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,ResponseMessage,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName,r.AvailableQuantity "
                         + "FROM Bookings as b, Resources as r,BookingStatus as bk "
                         + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId AND b.BookingId = ? AND b.IsDeleted = 0";
                 ps = conn.prepareStatement(sql);
@@ -83,6 +83,7 @@ public class BookingDAO {
                     Timestamp bookingDate = rs.getTimestamp("BookingDate");
                     Timestamp returnDate = rs.getTimestamp("ReturnDate");
                     String requestMessage = rs.getString("RequestMessage");
+                    String responseMessage= rs.getString("ResponseMessage");
                     int bookingStatusId = rs.getInt("BookingStatusId");
                     String bookingStatusName = rs.getString("Name");
                     Timestamp insDate = rs.getTimestamp("InsDate");
@@ -90,7 +91,7 @@ public class BookingDAO {
                     int resourceId = rs.getInt("ResourceId");
                     int availableQuantity = rs.getInt("AvailableQuantity");
                     String resourceName = rs.getString("ResourceName");
-                    result = new BookingDTO(bookingId, email, bookingDate, insDate, requestMessage, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
+                    result = new BookingDTO(bookingId, email, bookingDate, insDate, requestMessage, responseMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
                     result.setBookingStatusId(bookingStatusId);
                     result.setAvailableQuantity(availableQuantity);
                 }

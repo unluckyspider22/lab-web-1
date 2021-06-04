@@ -72,7 +72,9 @@
                 <th>Status</th>
                 <th>Request Time</th>
                 <th>Quantity</th>  
-
+                    <c:if test="${sessionScope.BOOKINGDETAIL.bookingStatusId != 1}">
+                    <th>Message response</th>
+                    </c:if>
             </tr>
             <tr>                 
                 <td>${sessionScope.BOOKINGDETAIL.resourceName}</td>
@@ -82,8 +84,11 @@
                 <td>${sessionScope.BOOKINGDETAIL.bookingStatusName}</td> 
                 <td><fmt:formatDate value="${sessionScope.BOOKINGDETAIL.insTimestamp}" pattern="MM/dd/yyyy HH:mm"/></td>
                 <td>${sessionScope.BOOKINGDETAIL.quantity}</td>
-                <td>                 
-                </td>
+                <c:if test="${sessionScope.BOOKINGDETAIL.bookingStatusId != 1}">
+                    <td>
+                        ${sessionScope.BOOKINGDETAIL.responseMessage}
+                    </td>
+                </c:if>
             </tr>
 
         </table>
@@ -97,7 +102,7 @@
                 <input type="radio" name="rdConfirm" value="3" required="true">
                 <label for="age1">Reject</label><br>
                 <br>
-                <textarea  name="responseMessage" form="usrform" placeholder="Enter message here..." style="resize: none" required="true"></textarea>
+                <input type="text" name="responseMessage" id="responseMessage" required="true" placeholder="Enter message here...">
                 <br>
                 <br>
                 <input type="submit" name="action" value="Confirm Update">
