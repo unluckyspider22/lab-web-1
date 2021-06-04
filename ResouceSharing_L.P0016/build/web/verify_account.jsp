@@ -10,7 +10,6 @@
     <body>
         <div id="login-box" class="col-md-12">
             <form id="login-form" action="MainController" method="POST">
-                <h2 class="text-center text-info">Account created successfully !</h2>
                 <h3 class="text-center text-info">You need to activate your account by verify code !</h3>
                 <h3 class="text-center text-info">We have sent the verify code to your email. Check your email to get it.</h3>
                 <div class="form-group">

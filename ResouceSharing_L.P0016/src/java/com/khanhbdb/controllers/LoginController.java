@@ -28,7 +28,7 @@ public class LoginController extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
     private final String SUCCESS_EMPLOYEE = "employee.jsp";
     private final String SUCCESS_LEADER = "leader.jsp";
-    private final String SUCCESS_NEW_USER = "new_user.jsp";
+    private final String SUCCESS_NEW_USER = "verify_account.jsp";
     private final String SUCCESS_MANAGER = "manager.jsp";
     private final String ERROR = "login.jsp";
 

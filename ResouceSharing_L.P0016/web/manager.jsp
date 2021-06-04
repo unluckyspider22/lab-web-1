@@ -45,6 +45,7 @@
             <c:param name="action" value="ViewBooking"/>
         </c:url>
         <a href=${viewBooking} >View Booking</a>
+        <a href="register.jsp"><font color="green">Create Account</font></a> 
         <br>
         <br>
         <!--Search form-->

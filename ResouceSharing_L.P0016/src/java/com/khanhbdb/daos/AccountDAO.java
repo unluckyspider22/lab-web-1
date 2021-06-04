@@ -99,7 +99,6 @@ public class AccountDAO implements Serializable {
         boolean result = false;
         try {
             RoleDAO roleDAO = new RoleDAO();
-            int roleId = roleDAO.getRoleIDByName(newUser.getRoleName());
             AccountStatusDAO accountStatusDAO = new AccountStatusDAO();
             int statusId = accountStatusDAO.getStatusIdByName(newUser.getStatus());
             conn = DBUtil.getConnection();
@@ -110,7 +109,7 @@ public class AccountDAO implements Serializable {
                 ps.setString(1, newUser.getEmail());
                 ps.setString(2, newUser.getPassword());
                 ps.setString(3, newUser.getName());
-                ps.setInt(4, roleId);
+                ps.setInt(4, newUser.getRoleId());
                 ps.setInt(5, statusId);
                 ps.setString(6, newUser.getVerifyCode());
                 ps.setDate(7, newUser.getInsDate());

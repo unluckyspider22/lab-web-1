@@ -42,7 +42,7 @@ public class RegisterController extends HttpServlet {
             String name = request.getParameter("txtName").trim();
             String email = request.getParameter("txtEmail").trim();
             String password = request.getParameter("txtPassword");
-            String roleName = "Employee";
+            int roleId = Integer.parseInt(request.getParameter("rdRole"));
             String statusName = "New";
             AccountDAO dao = new AccountDAO();
             AccountErrorObj error = null;
@@ -57,7 +57,8 @@ public class RegisterController extends HttpServlet {
             if (valid) {
                 String verifyCode = CommonUltil.generateVerifyCode(8);
                 Date insDate = CommonUltil.getCurrentDateSql();
-                AccountDTO dto = new AccountDTO(email, password, name, roleName, statusName, verifyCode, insDate);
+                AccountDTO dto = new AccountDTO(email, password, name, "", statusName, verifyCode, insDate);
+                dto.setRoleId(roleId);
                 boolean result = dao.registerAccount(dto);
                 if (result) {
                     HttpSession session = request.getSession();

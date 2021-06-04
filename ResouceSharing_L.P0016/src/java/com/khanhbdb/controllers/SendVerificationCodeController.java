@@ -20,7 +20,7 @@ public class SendVerificationCodeController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(SendVerificationCodeController.class.getName());
 
-    private final String SUCCESS = "verify_account.jsp";
+    private final String SUCCESS = "register.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,11 +39,12 @@ public class SendVerificationCodeController extends HttpServlet {
             HttpSession session = request.getSession();
             AccountDTO accountDTO = (AccountDTO) session.getAttribute("REGISTER_USER");
             session.setAttribute("VERIFICATIONCODE", accountDTO.getVerifyCode());
-            CommonUltil.sendVerificationCode(accountDTO.getEmail(), accountDTO.getVerifyCode());
+            CommonUltil.sendVerificationCode(accountDTO.getEmail(), accountDTO.getVerifyCode(), accountDTO.getPassword());
+            request.setAttribute("CREATESUCCESS", "Create account success");
         } catch (Exception e) {
             LOGGER.error("Error at SendVerificationCodeController: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+             request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

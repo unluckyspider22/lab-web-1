@@ -7,6 +7,7 @@
         <title>Register Page</title>
     </head>
     <body>
+        <a href="manager.jsp">< Back</a>
         <div class="container">
             <div class="row pt-5">
                 <aside class="col-sm-4">
@@ -14,30 +15,38 @@
                 <aside class="col-sm-4">
                     <div class="card">
                         <article class="card-body">
-                            <a href="login.jsp" class="float-right btn btn-outline-primary">Login</a>
+                            <!--<a href="login.jsp" class="float-right btn btn-outline-primary">Login</a>-->
                             <h4 class="card-title mb-4 mt-1">Sign Up</h4>
                             <form action="MainController" method="POST">
                                 <div class="form-group">
-                                    <label>Your name</label>
+                                    <label>Full name: </label>
                                     <input name="txtName" class="form-control" placeholder="Name" type="text" required="true">
                                 </div> <!-- form-group// -->
 
                                 <div class="form-group">
-                                    <label>Your email</label>
+                                    <label>Email: </label>
                                     <input name="txtEmail" class="form-control" placeholder="Email" type="email" required="true">
                                     <font color="red">${requestScope.REGISTER_ERROR.emailError}</font>
                                 </div> <!-- form-group// -->
                                 <div class="form-group">
-                                    <label>Password</label>
+                                    <label>Password: </label>
                                     <input name="txtPassword" id="txtPassword" class="form-control" placeholder="******" type="password" required="true" minlength="8" maxlength="48">
                                 </div> <!-- form-group// --> 
 
                                 <div class="form-group">
-                                    <label>Confirm password</label>
+                                    <label>Confirm password: </label>
                                     <input name="txtConfirmPassword" id="txtConfirmPassword" class="form-control" placeholder="******" type="password" required="true">
                                 </div> <!-- form-group// --> 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block" name="action" value="Register" onclick="return ValidatePassword()"> Register </button>
+                                    <label>Role of Account: </label><br>
+                                    <input type="radio" name="rdRole" value="2" required="true" checked="" >
+                                    <label for="age1">Leader</label>
+                                    <input type="radio" name="rdRole" value="3" required="true">
+                                    <label for="age1">Employee</label><br>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block" name="action" value="Register" onclick="return ValidatePassword()"> Create Account </button>
                                 </div> <!-- form-group// -->                               
                             </form>
                         </article>
@@ -46,6 +55,12 @@
 
                 <aside class="col-sm-4">
                 </aside>
+                <%
+                    String message = (String) request.getAttribute("CREATESUCCESS");
+                %>
+                <c:if test="${requestScope.CREATESUCCESS != null}">
+                    <span style="color: blue;">${requestScope.CREATESUCCESS}</span>
+                </c:if>
             </div>
         </div>
         <script type="text/javascript">

@@ -20,8 +20,11 @@ public class CheckVerifyCodeController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(CheckVerifyCodeController.class.getName());
 
-    private final String SUCCESS = "login.jsp";
-    private final String ERROR = "verify_account.jsp";
+    private final String SUCCESS_EMPLOYEE = "employee.jsp";
+    private final String SUCCESS_LEADER = "leader.jsp";
+    private final String SUCCESS_MANAGER = "manager.jsp";
+    private final String INVALID = "verify_account.jsp";
+    private final String ERROR = "error.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,16 +38,25 @@ public class CheckVerifyCodeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = INVALID;
         try {
             String userVerificationCode = request.getParameter("txtVerifyCode");
             HttpSession session = request.getSession();
-            AccountDTO accountDto = (AccountDTO) session.getAttribute("REGISTER_USER");
+            AccountDTO accountDto = (AccountDTO) session.getAttribute("USER");
             AccountDAO dao = new AccountDAO();
             String verifyCodeDB = dao.getAccountVerifyCode(accountDto.getEmail());
             if (userVerificationCode.equals(verifyCodeDB.trim())) {
                 dao.activeAccount(accountDto.getEmail(), "Active");
-                url = SUCCESS;
+                if(accountDto.getRoleId() == 1){
+                    url = SUCCESS_MANAGER;
+                }else if(accountDto.getRoleId() == 2){
+                    url = SUCCESS_LEADER;
+                }else if(accountDto.getRoleId() == 3){
+                    url = SUCCESS_EMPLOYEE;
+                }else{
+                    url = ERROR;
+                    request.setAttribute("ERROR", "Invalid role");
+                }
             } else {
                 request.setAttribute("VERIFICATION_ERROR", "Incorrect verification code!");
             }

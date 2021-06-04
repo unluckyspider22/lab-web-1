@@ -59,7 +59,7 @@ public class CommonUltil implements Serializable {
         return sqlDate;
     }
 
-    public static void sendVerificationCode(String email, String code) {
+    public static void sendVerificationCode(String email, String code, String password) {
 
         // Get properties object
         Properties props = new Properties();
@@ -83,7 +83,7 @@ public class CommonUltil implements Serializable {
             message.setFrom(new InternetAddress(MailConfig.APP_EMAIL));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Verification Email");
-            message.setText("Your verification code is: " + code);
+            message.setContent("Your account is: " + email, "text/html");
 
             // send message
             Transport.send(message);
