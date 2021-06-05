@@ -83,7 +83,7 @@ public class BookingDAO {
                     Timestamp bookingDate = rs.getTimestamp("BookingDate");
                     Timestamp returnDate = rs.getTimestamp("ReturnDate");
                     String requestMessage = rs.getString("RequestMessage");
-                    String responseMessage= rs.getString("ResponseMessage");
+                    String responseMessage = rs.getString("ResponseMessage");
                     int bookingStatusId = rs.getInt("BookingStatusId");
                     String bookingStatusName = rs.getString("Name");
                     Timestamp insDate = rs.getTimestamp("InsDate");
@@ -404,6 +404,31 @@ public class BookingDAO {
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     result = rs.getInt("Result");
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
+
+    public int getTotalQuantityBooked(BookingDTO dto) throws SQLException, NamingException {
+        int result = -1;
+        Date dateBook = new Date(dto.getBookingTimestamp().getTime());
+        Date dateReturn = new Date(dto.getReturnTimestamp().getTime());
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "Select SUM(dbo.Bookings.Quantity) as TotalQuantity "
+                        + "From Bookings "
+                        + "Where dbo.Bookings.ResourceId = ? and dbo.Bookings.BookingStatusId = 2 and CAST(dbo.Bookings.BookingDate as date) <=  CAST(? as date) and  CAST(? as date) <= CAST(dbo.Bookings.ReturnDate as date)";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, dto.getResourceId());
+                ps.setDate(2, dateBook);
+                ps.setDate(3, dateReturn);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("TotalQuantity");
                 }
             }
         } finally {

@@ -215,4 +215,23 @@ public class ResourceDAO {
         }
         return result;
     }
+        
+    public int getQuantityOfResource(int resourceId) throws SQLException, NamingException {
+        int result = -1;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "Select dbo.Resources.Quantity From Resources Where dbo.Resources.ResourceId = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, resourceId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("Quantity");
+                }
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+    }
 }

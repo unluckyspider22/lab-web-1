@@ -6,7 +6,9 @@
 package com.khanhbdb.controllers;
 
 import com.khanhbdb.daos.BookingDAO;
+import com.khanhbdb.daos.ResourceDAO;
 import com.khanhbdb.dtos.AccountDTO;
+import com.khanhbdb.dtos.BookingDTO;
 import com.khanhbdb.dtos.ResourceDTO;
 import com.khanhbdb.utils.CommonUltil;
 import java.io.IOException;
@@ -39,12 +41,12 @@ public class BookingController extends HttpServlet {
         String url = SUCCESS;
         boolean valid = true;
         try {
-            String quantityParam = request.getParameter("txtQuantity");
+            String quantityParamBook = request.getParameter("txtQuantity");
             String bookingDateParam = request.getParameter("bookingDate");
             String returnDateParam = request.getParameter("returnDate");
             String requestMessage = request.getParameter("requestMessage");
             HttpSession session = request.getSession();
-            session.setAttribute("QUANTITY", quantityParam);
+            session.setAttribute("QUANTITY", quantityParamBook);
             session.setAttribute("BOOKINGDATE", bookingDateParam);
             session.setAttribute("RETURNDATE", returnDateParam);
             session.setAttribute("REQUESTMESSAGE", requestMessage);
@@ -52,24 +54,35 @@ public class BookingController extends HttpServlet {
             AccountDTO accountDto = (AccountDTO) session.getAttribute("USER");
             String email = accountDto.getEmail();
             int resourceId = resourceDto.getResourceId();
-            int quantity = Integer.parseInt(quantityParam);
+            int quantityBook = Integer.parseInt(quantityParamBook);
             Timestamp bookingDate = CommonUltil.parseStringToDate(bookingDateParam);
             Timestamp returnDate = CommonUltil.parseStringToDate(returnDateParam);
-            if (quantity > resourceDto.getAvailableQuantity()) {
-                valid = false;
-                request.setAttribute("FAIL_WARNING", "Booking FAILED !!!");
-                request.setAttribute("MESSAGE", "The quantity must be less than available quantity of resource !");
-            }
+            BookingDAO bookingDao = new BookingDAO();
             if (returnDate.compareTo(bookingDate) <= 0) {
                 valid = false;
                 request.setAttribute("FAIL_WARNING", "Booking FAILED !!!");
                 request.setAttribute("MESSAGE", "The return time must be after the booking time !");
-            }
+            } else {
+                BookingDTO bookDto = new BookingDTO();
+                bookDto.setBookingTimestamp(bookingDate);
+                bookDto.setReturnTimestamp(returnDate);
+                bookDto.setQuantity(quantityBook);
+                bookDto.setResourceId(resourceId);
+                ResourceDAO resouceDAO = new ResourceDAO();
 
+                int totalQuantityResource = resouceDAO.getQuantityOfResource(resourceId);
+                int bookedQuantity = bookingDao.getTotalQuantityBooked(bookDto);
+                int availableBook = totalQuantityResource - bookedQuantity;
+
+                if (quantityBook > availableBook) {
+                    valid = false;
+                    request.setAttribute("FAIL_WARNING", "Booking FAILED !!!");
+                    request.setAttribute("MESSAGE", "Resource is only " + availableBook + " quantity at this time");
+                }
+            }
             if (valid) {
-                BookingDAO bookingDao = new BookingDAO();
                 boolean result
-                        = bookingDao.createBooking(resourceId, quantity, bookingDate, returnDate, email, requestMessage);
+                        = bookingDao.createBooking(resourceId, quantityBook, bookingDate, returnDate, email, requestMessage);
                 if (result) {
                     request.setAttribute("SUCCESS_MESS", "Booking Successfully !!!");
                 } else {
