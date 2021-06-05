@@ -28,7 +28,7 @@
     </head>
     <body>
         <c:if test="${sessionScope.USER.roleName ne 'Employee'}"><c:redirect url="login.jsp"></c:redirect></c:if>
-            <!--Welcome user-->
+                <!--Welcome user-->
         <c:if test="${sessionScope.USER != null}">
             <c:if test="${not empty sessionScope.USER.name}">
                 <h3>Welcome ${sessionScope.USER.name}!</h3>
@@ -40,11 +40,15 @@
         <!--Logout-->
         <a href="${Logout}">Logout</a>
         <br>
+        <br>
+        <a href="employee_view_booking_his.jsp">View booking history</a>
+        <br>
+        <br>
         <!--Search form-->
         <form action="MainController" class="search-form">
             <div class="form-group">
                 <span class="icon icon-search"></span>
-                 <input type="text" class="form-control" placeholder="Type a resource name" name="txtSearch" value="${sessionScope.PATTERN}">
+                <input type="text" class="form-control" placeholder="Type a resource name" name="txtSearch" value="${sessionScope.PATTERN}">
                 <c:if test="${sessionScope.LIST_CATE != null}">
                     <c:if test="${sessionScope.LIST_CATE.size() > 0}">
                         <select name="CBCATEGORY">
