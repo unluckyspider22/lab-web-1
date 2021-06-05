@@ -27,8 +27,8 @@
         a {
             margin-left: 15
         }
-      </style>
-<!--    <script>
+    </style>
+    <script>
         let valChk = false;
         function onClickHandler() {
             this.valChk = !this.valChk;
@@ -45,7 +45,7 @@
                 toDate.required = true;
             }
         }
-    </script>-->
+    </script>
     <body>
         <c:if test="${sessionScope.USER.roleName ne 'Leader'}"><jsp:forward page="login.jsp"/></c:if>
             <h1>Booking History</h1>
@@ -58,7 +58,9 @@
                 <div class="form-group">
                     <span class="icon icon-search"></span>
                     <input type="text" class="form-control" placeholder="Type a resource name" name="txtSearch" >
-               
+                    <font color="red">${requestScope.RESULTF}</font>
+                <font color="blue">${requestScope.RESULTS}</font>
+
                 <!--checkbox-->
                 <label class="switch">
                     <input  type="checkbox" onChange="onClickHandler()" name="chkDate">
@@ -109,7 +111,7 @@
                                     </tr>
                                     <c:forEach var="booking" items="${requestScope.LISTHISTORY}" varStatus="counter">
                                         <tr>     
-                                            <c:url var="delete" value="DeleteController">
+                                            <c:url var="delete" value="DeleteBookingController">
                                                 <c:param name="bookingId" value="${booking.bookingId}"></c:param>
                                             </c:url>
                                             <td>${counter.count}</td>
@@ -121,7 +123,7 @@
                                             <td><fmt:formatDate value="${booking.insTimestamp}" pattern="MM/dd/yyyy HH:mm"/></td>
                                             <td>${booking.quantity}</td>
                                             <td>
-                                                <a href="${delete}" >View Detail</a>
+                                                <a href="${delete}" >Delete</a>
                                                 <%--<c:if test="${booking.bookingStatusId eq 1}">--%>
                                                 <!--<form action="MainController" method="POST">-->
                                                 <!--<button class="buttonA" name="action" value="2">Approve</button>-->
@@ -140,6 +142,6 @@
             </div> 
         </form>
         <!-- END--> 
-        
+
     </body>
 </html>

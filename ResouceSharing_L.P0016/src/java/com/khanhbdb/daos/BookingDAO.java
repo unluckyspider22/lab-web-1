@@ -133,17 +133,34 @@ public class BookingDAO {
         return result;
     }
 
+    public boolean deleteBooking(int bookingId) throws SQLException, NamingException {
+        boolean result = false;
+        try {
+            conn = DBUtil.getConnection();
+            if (conn != null) {
+                String sql = "UPDATE Bookings SET IsDeleted = 1 WHERE BookingId = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, bookingId);
+                result = (ps.executeUpdate() > 0);
+            }
+        } finally {
+            DBUtil.closeConnection(conn, ps, rs);
+        }
+        return result;
+
+    }
+
     public List<BookingDTO> getBookingHistory(String email, String pattern) throws NamingException, SQLException {
         List<BookingDTO> result = null;
         try {
             conn = DBUtil.getConnection();
             if (conn != null) {
-                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,ResponseMessage,Censor,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,ResponseMessage,CensorName,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
                         + "FROM Bookings as b, Resources as r,BookingStatus as bk "
                         + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId AND Email = ? AND ResourceName LIKE ?  AND b.IsDeleted = 0 ORDER BY BookingDate DESC";
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, email);
-                ps.setString(2, pattern);
+                ps.setString(2, "%" + pattern + "%");
                 rs = ps.executeQuery();
                 result = new ArrayList<BookingDTO>();
                 while (rs.next()) {
@@ -157,7 +174,7 @@ public class BookingDAO {
                     int resourceId = rs.getInt("ResourceId");
                     String resourceName = rs.getString("ResourceName");
                     String responseMessage = rs.getString("ResponseMessage");
-                    String censor = rs.getString("Censor");
+                    String censor = rs.getString("CensorName");
                     BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
                     dto.setResponseMessage(responseMessage);
                     dto.setCensorName(censor);
@@ -170,17 +187,17 @@ public class BookingDAO {
         return result;
     }
 
-    public List<BookingDTO> getBookingHistoryByReqDate(String email, String pattern,Timestamp fromDate,Timestamp toDate) throws NamingException, SQLException {
+    public List<BookingDTO> getBookingHistoryByReqDate(String email, String pattern, Timestamp fromDate, Timestamp toDate) throws NamingException, SQLException {
         List<BookingDTO> result = null;
         try {
             conn = DBUtil.getConnection();
             if (conn != null) {
-                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,ResponseMessage,Censor,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
+                String sql = "SELECT BookingId,Email,BookingDate,ReturnDate,RequestMessage,ResponseMessage,CensorName,bk.BookingStatusId,bk.Name,InsDate,b.Quantity,r.ResourceId,r.ResourceName "
                         + "FROM Bookings as b, Resources as r,BookingStatus as bk "
                         + "WHERE b.ResourceId = r.ResourceId AND b.BookingStatusId = bk.BookingStatusId AND Email = ? AND ResourceName LIKE ? AND InsDate >= ? AND InsDate <= ?  AND b.IsDeleted = 0 ORDER BY BookingDate DESC";
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, email);
-                ps.setString(2, pattern);
+                ps.setString(2, "%" + pattern + "%");
                 ps.setTimestamp(3, fromDate);
                 ps.setTimestamp(5, toDate);
                 rs = ps.executeQuery();
@@ -196,7 +213,7 @@ public class BookingDAO {
                     int resourceId = rs.getInt("ResourceId");
                     String resourceName = rs.getString("ResourceName");
                     String responseMessage = rs.getString("ResponseMessage");
-                    String censor = rs.getString("Censor");
+                    String censor = rs.getString("CensorName");
                     BookingDTO dto = new BookingDTO(bookingId, email, bookingDate, returnDate, requestMessage, resourceName, bookingId, bookingStatusName, insDate, resourceId, resourceName, quantity);
                     dto.setResponseMessage(responseMessage);
                     dto.setCensorName(censor);

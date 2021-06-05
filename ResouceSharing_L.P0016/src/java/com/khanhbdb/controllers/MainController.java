@@ -74,7 +74,7 @@ public class MainController extends HttpServlet {
                 url = SEARCH_BOOKING;
             } else if (action.equals("Confirm Update")) {
                 url = UPDATE_BOOKING_STATUS;
-            } else if (action.equals("SeachBookingHis")) {
+            } else if (action.equals("SearchBookingHis")) {
                 url = SEARCH_BOOKING_HIS;
             }
             HttpSession session = request.getSession();

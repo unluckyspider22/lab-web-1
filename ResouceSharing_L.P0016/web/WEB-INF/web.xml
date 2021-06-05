@@ -60,6 +60,10 @@
         <servlet-name>ViewBookingHistoryController</servlet-name>
         <servlet-class>com.khanhbdb.controllers.ViewBookingHistoryController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteBookingController</servlet-name>
+        <servlet-class>com.khanhbdb.controllers.DeleteBookingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>ViewBookingHistoryController</servlet-name>
         <url-pattern>/ViewBookingHistoryController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBookingController</servlet-name>
+        <url-pattern>/DeleteBookingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

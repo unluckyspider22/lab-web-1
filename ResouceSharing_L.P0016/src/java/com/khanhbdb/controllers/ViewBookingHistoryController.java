@@ -9,6 +9,7 @@ import com.khanhbdb.daos.BookingDAO;
 import com.khanhbdb.dtos.AccountDTO;
 import com.khanhbdb.dtos.BookingDTO;
 import com.khanhbdb.utils.CommonUltil;
+import com.khanhbdb.utils.GlobalVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -57,6 +58,11 @@ public class ViewBookingHistoryController extends HttpServlet {
                 result = dao.getBookingHistoryByReqDate(dto.getEmail(), pattern, startDate, endDate);
             }
             request.setAttribute("LISTHISTORY", result);
+            if (dto.getRoleId() == GlobalVar.LEADER_ROLE) {
+                url = SUCCESS_LEA;
+            } else {
+                url = SUCCESS_EMP;
+            }
         } catch (Exception e) {
             log("ERROR at ViewBookingController: " + e.getMessage());
         } finally {

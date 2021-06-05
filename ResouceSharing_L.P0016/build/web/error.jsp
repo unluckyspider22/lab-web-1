@@ -17,7 +17,7 @@
         </style>
     </head>
     <body>
-        <%@include file="header.jsp" %>
+        <%--<%@include file="header.jsp" %>--%>
         <h1>Error page</h1>
         <span style="color: red;"><s:property value="%{#request.ERROR}"/></span>
     </body>
