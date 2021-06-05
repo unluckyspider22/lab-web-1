@@ -3,6 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/leader.jsp</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/manager_view_booking.jsp</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/PagingBookingController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/ViewBookingHistoryController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/LoginController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/verify_account.jsp</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/daos/BookingDAO.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/MainController.java</file>
+            <file>file:/D:/LabWeb/lab-web-1/ResouceSharing_L.P0016/web/leader_view_booking_his.jsp</file>
             <file>file:/D:/SE/Code/java/school/java_lab/labweb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/MainController.java</file>
             <file>file:/D:/SE/Code/java/school/java_lab/labweb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/controllers/LoginController.java</file>
             <file>file:/D:/SE/Code/java/school/java_lab/labweb/lab-web-1/ResouceSharing_L.P0016/src/java/com/khanhbdb/utils/CommonUltil.java</file>

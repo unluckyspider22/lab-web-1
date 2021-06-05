@@ -6,7 +6,9 @@
 package com.khanhbdb.controllers;
 
 import com.khanhbdb.daos.ResourceDAO;
+import com.khanhbdb.dtos.AccountDTO;
 import com.khanhbdb.dtos.ResourceDTO;
+import com.khanhbdb.utils.GlobalVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
@@ -22,7 +24,8 @@ import org.apache.log4j.Logger;
 public class ResourceDetailController extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(MainController.class.getName());
-    private final static String SUCCESS = "employee_resource_detail.jsp";
+    private final static String SUCCESS_EMP = "employee_resource_detail.jsp";
+    private final static String SUCCESS_LEA = "leader_resource_detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,7 +39,7 @@ public class ResourceDetailController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = "";
         try {
             String resourceIdParam = request.getParameter("resourceId");
             int resourceId = Integer.parseInt(resourceIdParam);
@@ -48,6 +51,12 @@ public class ResourceDetailController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("NOW", nowString);
             session.setAttribute("RESOURCE_DETAIL", dto);
+            AccountDTO accDto = (AccountDTO) session.getAttribute("USER");
+            if (accDto.getRoleId() == GlobalVar.EMPLOYEE_ROLE) {
+                url = SUCCESS_EMP;
+            } else {
+                url = SUCCESS_LEA;
+            }
         } catch (Exception e) {
             LOGGER.error("Error at ResourceDetailController: " + e.toString());
         } finally {

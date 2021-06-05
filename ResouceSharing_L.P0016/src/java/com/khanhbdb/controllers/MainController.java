@@ -32,6 +32,8 @@ public class MainController extends HttpServlet {
     private final String BOOKING = "BookingController";
     private final String VIEW_BOOKING = "ViewBookingController";
     private final String UPDATE_BOOKING_STATUS = "UpdateBookingStatusController";
+    private final String SEARCH_BOOKING_HIS = "ViewBookingHistoryController";
+
     private final String ERROR = "error.jsp";
 
     /**
@@ -43,6 +45,7 @@ public class MainController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -71,6 +74,8 @@ public class MainController extends HttpServlet {
                 url = SEARCH_BOOKING;
             } else if (action.equals("Confirm Update")) {
                 url = UPDATE_BOOKING_STATUS;
+            } else if (action.equals("SearchBookingHis")) {
+                url = SEARCH_BOOKING_HIS;
             }
             HttpSession session = request.getSession();
             if (session.getAttribute("USER") == null && action.equals("Search")) {
